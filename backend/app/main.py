@@ -35,11 +35,14 @@ async def lifespan(app: FastAPI):
     """Application lifespan events (startup/shutdown)."""
     logger.info("aura_backend_starting", env=settings.APP_ENV, debug=settings.DEBUG)
     
-    # Initialize MQTT client here later
+    # Initialize MQTT client
+    from app.services.mqtt_service import mqtt_client
+    mqtt_client.start()
     
     yield
     
     logger.info("aura_backend_shutting_down")
+    mqtt_client.stop()
     await close_db()
 
 
