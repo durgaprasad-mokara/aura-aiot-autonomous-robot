@@ -1,0 +1,109 @@
+# ==========================================
+# AURA — AIoT Autonomous Robotics Platform
+# .gitignore
+# ==========================================
+
+# ----- Environment & Secrets -----
+.env
+.env.local
+.env.production
+.env.staging
+!.env.example
+
+# ----- Python -----
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.whl
+.venv/
+venv/
+env/
+*.pyc
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.hypothesis/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ----- Node.js / Next.js -----
+node_modules/
+.next/
+out/
+.nuxt/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store/
+*.tsbuildinfo
+
+# ----- Docker -----
+docker-compose.override.yml
+
+# ----- Database -----
+*.db
+*.sqlite3
+postgres-data/
+pgdata/
+
+# ----- IDE -----
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# ----- OS -----
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ----- AI / ML -----
+*.onnx
+*.pt
+*.pth
+*.weights
+*.h5
+*.tflite
+!ai/models/.gitkeep
+
+# ----- Uploads & Media -----
+uploads/
+media/
+recordings/
+
+# ----- Logs -----
+logs/
+*.log
+
+# ----- Robot / Hardware -----
+robot/esp32/.pio/
+robot/esp32/.vscode/
+robot/raspberry_pi/__pycache__/
+
+# ----- Coverage & Test Reports -----
+test-results/
+playwright-report/
