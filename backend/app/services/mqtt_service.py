@@ -17,6 +17,7 @@ from app.services.telemetry_service import TelemetryService
 from app.services.robot_service import RobotService
 from app.schemas.telemetry import TelemetryIngest
 from app.schemas.detection import DetectionIngest
+from app.api.websocket import manager as ws_manager
 from pydantic import ValidationError
 
 logger = get_logger("mqtt_service")
@@ -143,8 +144,11 @@ class MQTTClientService:
                 )
                 await db.commit()
                 
-                # TODO: Check for anomalies and trigger alerts
-                # TODO: Broadcast to WebSockets
+                # Broadcast to WebSockets
+                await ws_manager.broadcast_to_robot(telemetry.robot_id, {
+                    "type": "telemetry",
+                    "data": telemetry.model_dump(mode="json")
+                })
                 
         except ValidationError as e:
             logger.warning("mqtt_telemetry_validation_failed", error=str(e))
@@ -156,6 +160,13 @@ class MQTTClientService:
         robot_id = data.get("robot_id")
         if not robot_id:
             return
+            
+        # Broadcast status change to dashboard
+        await ws_manager.broadcast_to_dashboard({
+            "type": "heartbeat",
+            "robot_id": robot_id,
+            "status": "ONLINE"
+        })
             
         async with async_session_factory() as db:
             robot_service = RobotService(db)
@@ -172,7 +183,12 @@ class MQTTClientService:
 
     async def handle_alert(self, topic: str, data: dict):
         """Handle robot-generated alerts."""
-        pass # Implementation pending
+        robot_id = data.get("robot_id")
+        if robot_id:
+            await ws_manager.broadcast_to_dashboard({
+                "type": "alert",
+                "data": data
+            })
 
 
 # Global singleton instance

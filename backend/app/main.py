@@ -23,6 +23,7 @@ from app.api.auth import router as auth_router
 from app.api.robots import router as robots_router
 from app.api.commands import router as commands_router
 from app.api.alerts import router as alerts_router
+from app.api.websocket import router as ws_router
 
 # Setup structured logging before anything else
 setup_logging()
@@ -80,6 +81,7 @@ app.include_router(robots_router, prefix=api_prefix)
 # Commands router is nested under /robots in the router definition
 app.include_router(commands_router, prefix=api_prefix)
 app.include_router(alerts_router, prefix=api_prefix)
+app.include_router(ws_router)
 
 
 # ========================
